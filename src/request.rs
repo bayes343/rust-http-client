@@ -19,8 +19,4 @@ impl Request {
 
       request_data
   }
-
-  pub fn fetch(&self) -> String {
-    self.protocol.connect(self)
-  }
 }

@@ -1,6 +1,7 @@
 use std::env;
 use std::io::Error;
 
+use http::fetch::fetch;
 use http::protocol::Protocol;
 use http::request::Request;
 
@@ -9,7 +10,7 @@ fn main() -> std::io::Result<()> {
     println!("Connecting to host: {}", request.host);
     println!("Path: {}", request.path);
 
-    let response_buffer = request.fetch();
+    let response_buffer = fetch(&request);
 
     println!("{response_buffer}");
     Ok(())
