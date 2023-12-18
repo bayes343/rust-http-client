@@ -4,10 +4,11 @@ use crate::{
 };
 
 pub struct Request {
+  pub method: Methods,
   pub protocol: Protocol,
   pub host: String,
   pub path: String,
-  pub method: Methods
+  pub headers: Vec<String>
 }
 
 impl Request {
@@ -18,7 +19,8 @@ impl Request {
       request_data.push_str("\r\n");
       request_data.push_str(format!("Host: {}", self.host).as_str());
       request_data.push_str("\r\n");
-      request_data.push_str("Connection: close");
+      request_data.push_str("Connection: close\r\n");
+      self.headers.clone().into_iter().for_each(|e| request_data.push_str(format!("{}\r\n", e).as_str()));
       request_data.push_str("\r\n");
       request_data.push_str("\r\n");
 
