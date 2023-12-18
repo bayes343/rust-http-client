@@ -20,10 +20,10 @@ impl Protocol {
       Self::Http => {
         let request_data = request.get_request_data();
         let mut stream = TcpStream::connect(format!("{}:{}", request.host, request.protocol.to_port_string())).unwrap();
-        stream.write_all(request_data.as_bytes());
+        let _ = stream.write_all(request_data.as_bytes());
 
         let mut response_buffer = String::new();
-        stream.read_to_string(&mut response_buffer);
+        let _ = stream.read_to_string(&mut response_buffer);
         response_buffer
       },
       Self::Https => {
@@ -43,11 +43,11 @@ impl Protocol {
         let host_name = request.host.clone().try_into().unwrap();
         let mut client = rustls::ClientConnection::new(rc_config, host_name).unwrap();
         let mut socket = std::net::TcpStream::connect(format!("{}:{}", request.host, request.protocol.to_port_string())).unwrap();
-        client.writer().write_all(request_data.as_bytes());
+        let _ = client.writer().write_all(request_data.as_bytes());
         let mut stream = rustls::Stream::new(&mut client, &mut socket);
 
         let mut response_buffer = String::new();
-        stream.read_to_string(&mut response_buffer);
+        let _ = stream.read_to_string(&mut response_buffer);
         response_buffer
       }
     }
