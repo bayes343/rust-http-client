@@ -9,7 +9,7 @@ fn main() -> std::io::Result<()> {
     println!("Connecting to host: {}", request.host);
     println!("Path: {}", request.path);
 
-    let response_buffer = request.protocol.connect(&request);
+    let response_buffer = request.fetch();
 
     println!("{response_buffer}");
     Ok(())
