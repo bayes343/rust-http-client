@@ -1,7 +1,5 @@
 use std::env;
-use std::io::{Error, Read, Write};
-use std::net::TcpStream;
-use std::sync::Arc;
+use std::io::Error;
 
 use http::protocol::Protocol;
 use http::request::Request;
@@ -11,36 +9,7 @@ fn main() -> std::io::Result<()> {
     println!("Connecting to host: {}", request.host);
     println!("Path: {}", request.path);
 
-    let request_data = request.get_request_data();
-    let mut response_buffer = String::new();
-
-    match request.protocol {
-        Protocol::Https => {
-            let mut root_store = rustls::RootCertStore::empty();
-            root_store.extend(
-            webpki_roots::TLS_SERVER_ROOTS
-                .iter()
-                .cloned()
-            );
-
-            let config = rustls::ClientConfig::builder()
-                .with_root_certificates(root_store)
-                .with_no_client_auth();
-
-            let rc_config = Arc::new(config);
-            let host_name = request.host.clone().try_into().unwrap();
-            let mut client = rustls::ClientConnection::new(rc_config, host_name).unwrap();
-            let mut socket = std::net::TcpStream::connect(format!("{}:{}", request.host, request.protocol.to_port_string())).unwrap();
-            client.writer().write_all(request_data.as_bytes())?;
-            let mut stream = rustls::Stream::new(&mut client, &mut socket);
-            stream.read_to_string(&mut response_buffer)?;
-        },
-        Protocol::Http => {
-            let mut stream = TcpStream::connect(format!("{}:{}", request.host, request.protocol.to_port_string())).unwrap();
-            stream.write_all(request_data.as_bytes())?;
-            stream.read_to_string(&mut response_buffer)?;
-        }
-    }
+    let response_buffer = request.protocol.connect(&request);
 
     println!("{response_buffer}");
     Ok(())
