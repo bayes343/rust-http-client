@@ -10,11 +10,7 @@ use http::{
 
 fn main() -> std::io::Result<()> {
     let request = get_request_from_args().unwrap();
-    println!("Connecting to host: {}", request.host);
-    println!("Path: {}", request.path);
-
     let response_buffer = fetch(&request);
-
     println!("{response_buffer}");
     Ok(())
 }
@@ -29,6 +25,7 @@ fn get_request_from_args() -> Result<Request, Error> {
         let url_without_protocol = url.replace(format!("{protocol_string}://").as_str(), "");
         let host_and_path: Vec<&str> = url_without_protocol.split('/').collect();
         let remaining_args = if args.len() > 3 { args[3..].to_vec() } else { vec![] };
+        let body_candidates: Vec<String> = remaining_args.clone().into_iter().filter(|e| !e.contains(": ")).collect();
 
         Ok(Request {
             protocol: if protocol_string == "http" { Protocol::Http } else { Protocol::Https },
@@ -37,7 +34,8 @@ fn get_request_from_args() -> Result<Request, Error> {
             path: String::from(
                 if host_and_path.len() > 1 { format!("/{}", host_and_path[1..].join("/")) } else { String::from("/") }
             ),
-            headers: remaining_args.into_iter().filter(|e| e.contains(": ")).collect()
+            headers: remaining_args.into_iter().filter(|e| e.contains(": ")).collect(),
+            body: body_candidates.first().cloned()
         })
     } else {
         Err(Error::new(
