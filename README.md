@@ -5,7 +5,7 @@ Rust based HTTP client.
 ## Feature Plan
 
 - Library Features
-  - [x] Support HTTP and HTTPS protocols (HTTPS by default)
+  - [x] Support HTTP and HTTPS protocols
   - [x] Abstract Requests `src/request.rs`
   - [x] Public function for getting a response from a request `src/fetch.rs`
   - [ ] Abstract Responses
@@ -71,13 +71,13 @@ alt-svc: h3=":443"; ma=86400
 
 ### Local Dev
 
-- `cargo run GET https://api.chucknorris.io`
-- `cargo run GET api.chucknorris.io "Content-Type: application/json"` each individual header should be wrapped in double quotes
-- `cargo run POST api.chucknorris.io "Content-Type: application/json" "{"id": "test"}"` the first arg not containing ": " after the uri will be used as the request body
+- `cargo run GET https://api.chucknorris.io/jokes/random`
+- `cargo run GET api.chucknorris.io/jokes/random "Content-Type: application/json"` each individual header should be wrapped in double quotes
+- `cargo run POST api.chucknorris.io/jokes/random "Content-Type: application/json" "{"id": "test"}"` the first arg not containing ": " after the uri will be used as the request body
 - Given a file like the below you can make requests by passing a filepath `cargo run ./example.http`
 
 ```sh
-GET https://api.chucknorris.io
+GET https://api.chucknorris.io/jokes/random
 Some-Header: value
 
 {
