@@ -8,11 +8,10 @@ use http::{
     methods::Methods
 };
 
-fn main() -> std::io::Result<()> {
+fn main() {
     let request = get_request_from_args().unwrap();
-    let response_buffer = fetch(&request);
-    println!("{response_buffer}");
-    Ok(())
+    let response = fetch(&request);
+    println!("{response}");
 }
 
 fn get_request_from_args() -> Result<Request, Error> {

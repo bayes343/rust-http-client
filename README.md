@@ -4,7 +4,9 @@ Experimental Rust based HTTP client.
 
 ## Local Setup
 
-TODO
+- Follow Rust installation instructions at https://doc.rust-lang.org/stable/book/ch01-01-installation.html
+- Build / run the project with `cargo build` and `cargo run` respectively.
+  - See below examples for appropriate use of args.
 
 ## Example Usage
 
