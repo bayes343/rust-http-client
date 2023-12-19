@@ -2,6 +2,18 @@
 
 Experimental Rust based HTTP client.
 
+## Feature Plan
+
+- Library Features
+  - [x] Support HTTP and HTTPS protocols (HTTPS by default)
+  - [x] Abstract Requests `src/request.rs`
+  - [x] Public function for getting a response from a request `src/fetch.rs`
+  - [ ] Abstract Responses
+- CLI Features
+  - [x] Support for making requests through command line arguments only
+  - [x] Support for making requests through pointing to an http file
+  - [ ] Support for saving the response to a file
+
 ## Local Setup
 
 - Follow Rust installation instructions at https://doc.rust-lang.org/stable/book/ch01-01-installation.html
@@ -12,11 +24,9 @@ Experimental Rust based HTTP client.
 
 ### Local Dev
 
-- `cargo run GET api.chucknorris.io/jokes/random` default to https protocol
-- `cargo run GET https://api.chucknorris.io/jokes/random` explicit use of https protocol
-- `cargo run GET http://api.chucknorris.io/jokes/random` explicit use of http protocol
-- `cargo run GET api.chucknorris.io/jokes/random "Content-Type: application/json"` adding a custom header - each individual header should be wrapped in double quotes
-- `cargo run POST api.chucknorris.io/jokes/random "Content-Type: application/json" "{"fake": "example"}"` the first arg not containing ": " after the uri will be used as the request body
+- `cargo run GET https://somewebsite.com`
+- `cargo run GET somewebsite.com "Content-Type: application/json"` each individual header should be wrapped in double quotes
+- `cargo run POST somewebsite.com "Content-Type: application/json" "{"id": "te"}"` the first arg not containing ": " after the uri will be used as the request body
 - Given a file like the below you can make requests by passing a filepath `cargo run ./example.http`
 
 ```sh
