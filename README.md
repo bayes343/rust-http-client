@@ -8,11 +8,13 @@ Rust based HTTP client.
   - [x] Support HTTP and HTTPS protocols
   - [x] Abstract Requests `src/request.rs`
   - [x] Public function for getting a response from a request `src/fetch.rs`
-  - [ ] Abstract Responses
+  - [x] Abstract Responses
+  - [ ] ...
 - CLI Features
   - [x] Support for making requests through command line arguments only
   - [x] Support for making requests through pointing to an http file
   - [ ] Support for saving the response to a file
+  - [ ] ...
 
 ## Local Setup
 
@@ -37,34 +39,18 @@ let response = fetch(&Request{
     path: String::from("/jokes/random"),
     headers: vec![],
     body: None
-});
-println!("{response}");
+}).unwrap();
+
+println!("{} {}", response.status, response.status_text);
+if let Some(b) = response.body {
+    println!("{}", b)
+}
 ```
 
 The above would print something like...
 ```sh
-HTTP/1.1 200 OK
-Date: Tue, 19 Dec 2023 04:29:13 GMT
-Content-Type: application/json;charset=UTF-8
-Connection: close
-Report-To: {"group":"heroku-nel","max_age":3600,"endpoints":[{"url":"https://nel.heroku.com/reports?ts=1702960152&sid=812dcc77-0bd0-43b1-a5f1-b25750382959&s=cMYo8nkSow5XyEmHGirtZ9Fmn3yp3adfn7Wx8bearKc%3D"}]}
-Reporting-Endpoints: heroku-nel=https://nel.heroku.com/reports?ts=1702960152&sid=812dcc77-0bd0-43b1-a5f1-b25750382959&s=cMYo8nkSow5XyEmHGirtZ9Fmn3yp3adfn7Wx8bearKc%3D
-Nel: {"report_to":"heroku-nel","max_age":3600,"success_fraction":0.005,"failure_fraction":0.05,"response_headers":["Via"]}
-Via: 1.1 vegur
-CF-Cache-Status: DYNAMIC
-Server: cloudflare
-CF-RAY: 837ce739a9316ac3-RIC
-alt-svc: h3=":443"; ma=86400
-
-{
-    "categories": [],
-    "created_at": "2020-01-05 13:42:28.664997",
-    "icon_url": "https://assets.chucknorris.host/img/avatar/chuck-norris.png",
-    "id": "9FqrXimEQ2-XoPbAx-UcBA",
-    "updated_at": "2020-01-05 13:42:28.664997",
-    "url": "https://api.chucknorris.io/jokes/9FqrXimEQ2-XoPbAx-UcBA",
-    "value": "Adobe Flash runs on Chuck Norris' iPhone."
-}
+200 OK
+{"categories": [],"created_at": "2020-01-05 13:42:28.664997","icon_url": "https://assets.chucknorris.host/img/avatar/chuck-norris.png","id": "9FqrXimEQ2-XoPbAx-UcBA","updated_at": "2020-01-05 13:42:28.664997","url": "https://api.chucknorris.io/jokes/9FqrXimEQ2-XoPbAx-UcBA","value": "Adobe Flash runs on Chuck Norris' iPhone."}
 ```
 
 ## CLI Examples

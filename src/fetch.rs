@@ -1,12 +1,16 @@
 use std::{
   net::TcpStream,
   sync::Arc,
-  io::{Write, Read}
+  io::{Write, Read, Error}
 };
 
-use crate::{request::Request, protocol::Protocol};
+use crate::{
+  request::Request,
+  protocol::Protocol,
+  response::Response
+};
 
-pub fn fetch(request: &Request) -> String {
+pub fn fetch(request: &Request) -> Result<Response, Error> {
   match request.protocol {
     Protocol::Http => {
       let request_data = request.get_request_data();
@@ -15,7 +19,8 @@ pub fn fetch(request: &Request) -> String {
 
       let mut response_buffer = String::new();
       let _ = stream.read_to_string(&mut response_buffer);
-      response_buffer
+
+      Response::from(response_buffer)
     },
     Protocol::Https => {
       let request_data = request.get_request_data();
@@ -39,7 +44,8 @@ pub fn fetch(request: &Request) -> String {
 
       let mut response_buffer = String::new();
       let _ = stream.read_to_string(&mut response_buffer);
-      response_buffer
+
+      Response::from(response_buffer)
     }
   }
 }

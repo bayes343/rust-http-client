@@ -29,8 +29,6 @@ impl Request {
       request_data.push_str("\r\n");
       request_data.push_str("\r\n");
 
-      println!("{:?}", request_data);
-
       request_data
   }
 }

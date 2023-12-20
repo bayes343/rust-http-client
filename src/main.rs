@@ -11,8 +11,12 @@ use http::{
 
 fn main() {
     let request = get_request_from_args().unwrap();
-    let response = fetch(&request);
-    println!("{response}");
+    let response = fetch(&request).unwrap();
+
+    println!("{} {}", response.status, response.status_text);
+    if let Some(b) = response.body {
+        println!("{}", b)
+    }
 }
 
 fn get_request_from_args() -> Result<Request, Error> {
@@ -64,7 +68,6 @@ fn get_method_from_method_string(method_string: &str) -> Methods {
 
 fn get_request_from_file(file_path: &str) -> Result<Request, Error> {
     let file_contents = fs::read_to_string(file_path).expect("Unable to read given file.");
-    println!("{:?}", file_contents);
     let lines: Vec<&str> = file_contents.split('\n').filter(|&e| e.len() > 0 ).collect();
 
     if lines.len() > 0 {
