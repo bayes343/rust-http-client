@@ -8,7 +8,7 @@ Rust based HTTP client.
   - [x] Support HTTP and HTTPS protocols
   - [x] Abstract Requests `src/request.rs`
   - [x] Public function for getting a response from a request `src/fetch.rs`
-  - [x] Abstract Responses
+  - [x] Abstract Responses `src/response.rs`
   - [ ] ...
 - CLI Features
   - [x] Support for making requests through command line arguments only
