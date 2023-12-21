@@ -75,7 +75,8 @@ fn get_method_from_method_string(method_string: &str) -> Methods {
 
 fn get_request_from_file(file_path: &str) -> Result<Request, Error> {
     let file_contents = fs::read_to_string(file_path).expect("Unable to read given file.");
-    let lines: Vec<&str> = file_contents.split('\n').filter(|&e| e.len() > 0 ).collect();
+    let line_ending = if file_contents.contains("\r\n") { "\r\n" } else { "\n" };
+    let lines: Vec<&str> = file_contents.split(line_ending).filter(|&e| e.len() > 0 ).collect();
 
     if lines.len() > 0 {
         let method_url: Vec<&str> = lines[0].split(' ').collect();
