@@ -10,8 +10,17 @@ use http::{
 };
 
 fn main() {
-    let request = get_request_from_args().unwrap();
+    let args: Vec<String> = env::args().collect();
+    let should_output_file = args.len() == 2;
+    let request = get_request_from_args(&args).unwrap();
     let response = fetch(&request).unwrap();
+
+    if should_output_file {
+        let file = &args[1];
+        let path = format!("{file}.output");
+        println!("Writing response to {path}");
+        let _ = fs::write(path, response.raw);
+    }
 
     println!("{} {}", response.status, response.status_text);
     if let Some(b) = response.body {
@@ -19,9 +28,7 @@ fn main() {
     }
 }
 
-fn get_request_from_args() -> Result<Request, Error> {
-    let args: Vec<String> = env::args().collect();
-
+fn get_request_from_args(args: &Vec<String>) -> Result<Request, Error> {
     if args.len() > 2 {
         let method_string = &args[1];
         let url = &args[2];

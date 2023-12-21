@@ -13,7 +13,8 @@ Rust based HTTP client.
 - CLI Features
   - [x] Support for making requests through command line arguments only
   - [x] Support for making requests through pointing to an http file
-  - [ ] Support for saving the response to a file
+  - [x] Support for saving the raw response to a file
+  - [ ] Support for saving the response to a file based on content-type header
   - [ ] ...
 
 ## Local Setup
@@ -43,7 +44,7 @@ let response = fetch(&Request{
 
 println!("{} {}", response.status, response.status_text);
 if let Some(b) = response.body {
-    println!("{}", b)
+    println!("{}", b);
 }
 ```
 
